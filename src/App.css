@@ -1,0 +1,249 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px clamp(20px, 6vw, 72px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.brand-name strong {
+  font-weight: 600;
+}
+
+.site-nav {
+  display: flex;
+  gap: clamp(16px, 3vw, 32px);
+  font-size: 0.95rem;
+}
+
+.site-nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: var(--amber-deep);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+  padding: clamp(56px, 12vw, 128px) 24px clamp(72px, 10vw, 120px);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 480px;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(245, 166, 35, 0.35),
+    rgba(245, 166, 35, 0) 70%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--sky);
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  max-width: 16ch;
+  line-height: 1.1;
+}
+
+.hero-text {
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--amber), var(--amber-deep));
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -12px rgba(232, 135, 30, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -12px rgba(232, 135, 30, 0.7);
+}
+
+.badge {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  padding: 8px 4px;
+  border-bottom: 2px dashed var(--teal);
+}
+
+.features {
+  padding: clamp(48px, 8vw, 80px) 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  background: var(--cream-soft);
+}
+
+.features h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.feature-card {
+  background: var(--cream);
+  border: 1px solid rgba(26, 24, 21, 0.08);
+  border-radius: 18px;
+  padding: 28px 26px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-card h3 {
+  font-size: 1.15rem;
+  color: var(--amber-deep);
+}
+
+.feature-card p {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.contact {
+  padding: clamp(56px, 10vw, 96px) 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.contact h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.contact p {
+  color: var(--ink-soft);
+  max-width: 40ch;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 28px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: var(--teal);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.contact-links a:hover {
+  border-color: var(--teal);
+}
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 24px 36px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(26, 24, 21, 0.08);
+}
+
+.footer-mark {
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+}
+
+.footer-copy {
+  margin-left: 12px;
+  opacity: 0.7;
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
