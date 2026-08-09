@@ -1,4 +1,4 @@
-import logoLeaf from './assets/logo-leaf.png'
+import logoLenga from './assets/logo-lenga.svg'
 import './App.css'
 
 const CONTACT_EMAIL = 'contacto@lengaeditorial.cl'
@@ -24,10 +24,7 @@ function App() {
     <>
       <header className="site-header">
         <a className="brand" href="#top">
-          <img src={logoLeaf} alt="Lenga Editorial" className="brand-mark" />
-          <span className="brand-name">
-            <strong>lenga</strong>editorial
-          </span>
+          <img src={logoLenga} alt="Lenga Editorial" className="brand-logo" />
         </a>
         <nav className="site-nav">
           <a href="#que-hacemos">Qué hacemos</a>
@@ -76,10 +73,7 @@ function App() {
       </main>
 
       <footer className="site-footer">
-        <img src={logoLeaf} alt="" className="footer-mark" />
-        <span className="brand-name">
-          <strong>lenga</strong>editorial
-        </span>
+        <img src={logoLenga} alt="Lenga Editorial" className="footer-logo" />
         <span className="footer-copy">
           © {new Date().getFullYear()} · Chiloé, Chile
         </span>

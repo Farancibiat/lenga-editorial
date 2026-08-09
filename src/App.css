@@ -14,19 +14,9 @@
   color: var(--ink);
 }
 
-.brand-mark {
-  width: 40px;
-  height: 40px;
-}
-
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-}
-
-.brand-name strong {
-  font-weight: 600;
+.brand-logo {
+  height: 48px;
+  width: auto;
 }
 
 .site-nav {
@@ -230,9 +220,9 @@ main {
   border-top: 1px solid rgba(26, 24, 21, 0.08);
 }
 
-.footer-mark {
-  width: 22px;
-  height: 22px;
+.footer-logo {
+  height: 30px;
+  width: auto;
   opacity: 0.8;
 }
 
