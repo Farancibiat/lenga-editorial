@@ -1,15 +1,64 @@
 :root {
-  --cream: #f2eec8;
-  --cream-soft: #f8f6e4;
-  --ink: #1a1815;
-  --ink-soft: #4a473d;
-  --amber: #f5a623;
-  --amber-deep: #e8871e;
-  --teal: #4f8482;
-  --sky: #b8cce7;
+  /* Paleta principal — verdes lenga + negro y oliva de marca */
+  --lenga-green-deep: #004d0a;
+  --lenga-green: #008700;
+  --lenga-black: #000000;
+  --lenga-olive: #2e341a;
 
-  --font-display: 'Fraunces', serif;
-  --font-body: 'Work Sans', sans-serif;
+  /* Paleta secundaria — acentos cálidos y neutros */
+  --lenga-orange: #ffa314;
+  --lenga-yellow: #ffbd00;
+  --lenga-gray: #525350;
+  --lenga-gray-light: #e7e7e7;
+
+  /* Paleta complementaria — apoyo editorial y señalética */
+  --lenga-blue: #004f98;
+  --lenga-red: #b00600;
+  --lenga-gray-dark: #51524f;
+  --lenga-cream: #ece5bb;
+
+  /* Colores semánticos */
+  --surface-page: #f4f4f2;
+  --surface-card: #ffffff;
+  --text-heading: #000000;
+  --accent: #008700;
+  --accent-warm: #ffbd00;
+
+  /* Degradado de la submarca Mapa Castro (único degradado de marca) */
+  --mapa-castro-gradient: linear-gradient(135deg, #ffbd00, #ffa314);
+
+  /* Tipografías — Mont y Cooper Hewitt con fallbacks de Google Fonts */
+  --font-mont: 'Mont', 'Montserrat', sans-serif;
+  --font-cooper: 'Cooper Hewitt', 'Barlow', sans-serif;
+  --font-neue: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+
+  /* Escala tipográfica */
+  --text-display: clamp(2.6rem, 6vw, 4rem);
+  --text-h1: clamp(2rem, 4.5vw, 2.8rem);
+  --text-h2: clamp(1.5rem, 3vw, 2rem);
+  --text-subtitle: 1.125rem;
+  --text-body-md: 1rem;
+  --text-editorial: 1.0625rem;
+
+  /* Escala de espaciado 4→64px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radios y sombras */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-raised: 0 12px 32px -20px rgba(0, 0, 0, 0.28);
+
+  /* Layout */
+  --header-h: 72px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,11 +76,17 @@ body {
   padding: 0;
 }
 
+html {
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
 body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: var(--font-body);
+  background: var(--surface-page);
+  color: var(--lenga-gray-dark);
+  font-family: var(--font-cooper);
+  font-size: var(--text-body-md);
   line-height: 1.55;
+  padding-top: var(--header-h);
 }
 
 #root {
@@ -42,10 +97,10 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: var(--font-mont);
+  font-weight: 700;
   margin: 0;
-  color: var(--ink);
+  color: var(--text-heading);
 }
 
 p {
@@ -63,4 +118,10 @@ img {
 
 button {
   font-family: inherit;
+}
+
+@media (max-width: 560px) {
+  :root {
+    --header-h: 116px;
+  }
 }

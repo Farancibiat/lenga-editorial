@@ -1,48 +1,48 @@
+/* ---------- Header fijo ---------- */
+
 .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: 28px clamp(20px, 6vw, 72px);
+  gap: var(--space-5);
+  padding: 0 clamp(20px, 6vw, 72px);
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--lenga-gray-light);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
   text-decoration: none;
-  color: var(--ink);
 }
 
-.brand-mark {
-  width: 40px;
-  height: 40px;
-}
-
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-}
-
-.brand-name strong {
-  font-weight: 600;
+.brand-logo {
+  height: 52px;
+  width: auto;
 }
 
 .site-nav {
   display: flex;
   gap: clamp(16px, 3vw, 32px);
+  font-family: var(--font-cooper);
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .site-nav a {
   text-decoration: none;
-  color: var(--ink-soft);
+  color: var(--lenga-gray);
   transition: color 0.2s ease;
 }
 
 .site-nav a:hover {
-  color: var(--amber-deep);
+  color: var(--accent);
 }
 
 main {
@@ -50,29 +50,17 @@ main {
   flex-direction: column;
 }
 
+/* ---------- Hero ---------- */
+
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 22px;
-  padding: clamp(56px, 12vw, 128px) 24px clamp(72px, 10vw, 120px);
+  gap: var(--space-5);
+  padding: clamp(56px, 10vw, 112px) 24px clamp(64px, 9vw, 104px);
   overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: -30% -10% auto -10%;
-  height: 480px;
-  background: radial-gradient(
-    ellipse at top,
-    rgba(245, 166, 35, 0.35),
-    rgba(245, 166, 35, 0) 70%
-  );
-  z-index: 0;
-  pointer-events: none;
 }
 
 .hero > * {
@@ -81,27 +69,26 @@ main {
 }
 
 .eyebrow {
-  display: inline-flex;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: var(--sky);
-  color: var(--ink);
-  font-size: 0.8rem;
+  font-family: var(--font-cooper);
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--accent);
 }
 
 .hero h1 {
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  max-width: 16ch;
-  line-height: 1.1;
+  font-size: var(--text-h1);
+  max-width: min(18ch, 100%);
+  line-height: 1.12;
 }
 
 .hero-text {
-  max-width: 46ch;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
+  max-width: min(52ch, 100%);
+  color: var(--lenga-gray-dark);
+  font-family: var(--font-neue);
+  font-size: var(--text-editorial);
+  line-height: 1.65;
 }
 
 .hero-actions {
@@ -109,141 +96,422 @@ main {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 8px;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
 }
+
+/* ---------- Botones y etiquetas ---------- */
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 30px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--amber), var(--amber-deep));
-  color: var(--ink);
-  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-cooper);
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 10px 24px -12px rgba(232, 135, 30, 0.6);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -12px rgba(232, 135, 30, 0.7);
+  background: var(--lenga-green-deep);
+  transform: translateY(-1px);
 }
 
-.badge {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  padding: 8px 4px;
-  border-bottom: 2px dashed var(--teal);
+.button-secondary {
+  background: var(--surface-card);
+  color: var(--text-heading);
+  border: 1px solid var(--lenga-gray-light);
 }
 
-.features {
-  padding: clamp(48px, 8vw, 80px) 24px;
+.button-secondary:hover {
+  background: var(--surface-card);
+  border-color: var(--lenga-gray);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 100%;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-warm);
+  color: var(--text-heading);
+  font-family: var(--font-cooper);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Secciones ---------- */
+
+.section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
-  background: var(--cream-soft);
+  text-align: center;
+  gap: var(--space-6);
+  padding: clamp(48px, 8vw, 80px) 24px;
 }
 
-.features h2 {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+.section h2 {
+  font-size: var(--text-h2);
+}
+
+/* ---------- Home: features y contacto ---------- */
+
+.features-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.features-leaf {
+  width: 52px;
+  height: 52px;
 }
 
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  gap: var(--space-5);
   width: 100%;
   max-width: 1000px;
 }
 
 .feature-card {
-  background: var(--cream);
-  border: 1px solid rgba(26, 24, 21, 0.08);
-  border-radius: 18px;
-  padding: 28px 26px;
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  padding: var(--space-6) var(--space-5);
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .feature-card h3 {
-  font-size: 1.15rem;
-  color: var(--amber-deep);
+  font-size: 1.1rem;
 }
 
 .feature-card p {
-  color: var(--ink-soft);
+  color: var(--lenga-gray-dark);
   font-size: 0.95rem;
 }
 
-.contact {
-  padding: clamp(56px, 10vw, 96px) 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
-}
-
-.contact h2 {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-}
-
 .contact p {
-  color: var(--ink-soft);
-  max-width: 40ch;
+  color: var(--lenga-gray-dark);
+  max-width: min(44ch, 100%);
 }
 
 .contact-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 14px 28px;
-  margin-top: 10px;
+  gap: var(--space-4) var(--space-6);
+  font-family: var(--font-cooper);
   font-weight: 600;
 }
 
 .contact-links a {
   text-decoration: none;
-  color: var(--teal);
+  color: var(--accent);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
 
 .contact-links a:hover {
-  border-color: var(--teal);
+  border-color: var(--accent);
 }
+
+/* ---------- Footer (pie oliva) ---------- */
 
 .site-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 28px 24px 36px;
-  color: var(--ink-soft);
+  gap: var(--space-3);
+  padding: var(--space-6) 24px;
+  background: var(--lenga-olive);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
-  border-top: 1px solid rgba(26, 24, 21, 0.08);
 }
 
-.footer-mark {
-  width: 22px;
-  height: 22px;
-  opacity: 0.8;
+.footer-logo {
+  height: 44px;
+  width: auto;
 }
 
 .footer-copy {
-  margin-left: 12px;
-  opacity: 0.7;
+  margin-left: var(--space-3);
+  opacity: 0.75;
 }
+
+/* ---------- Submarca Mapa Castro ---------- */
+
+.mc-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.mc-logo svg {
+  width: 54px;
+  height: 54px;
+}
+
+.mc-word {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mont);
+  line-height: 1.02;
+  text-align: left;
+  font-size: 1.5rem;
+}
+
+.mc-mapa {
+  color: var(--lenga-gray);
+  font-weight: 700;
+}
+
+.mc-castro {
+  color: var(--lenga-orange);
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* ---------- Página Directorio ---------- */
+
+.dir-hero .hero-text {
+  max-width: min(58ch, 100%);
+}
+
+.dir-fichas {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 48px);
+}
+
+/* Fichas de muestra: fondos planos de la paleta, bordes biselados.
+   La sombra va en un wrapper porque el clip-path recortaría un box-shadow
+   aplicado directo al cuerpo. */
+.ficha-card {
+  margin: 0;
+  width: 370px;
+  max-width: 100%;
+  text-align: left;
+}
+
+.ficha-shadow {
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.12));
+}
+
+.ficha-body {
+  background: var(--lenga-gray-light);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  clip-path: polygon(
+    16px 0,
+    calc(100% - 16px) 0,
+    100% 16px,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    16px 100%,
+    0 calc(100% - 16px),
+    0 16px
+  );
+}
+
+/* La destacada se diferencia por color de fondo (crema de la paleta
+   complementaria) frente al gris claro de la estándar */
+.ficha-destacada .ficha-body {
+  background: var(--lenga-cream);
+}
+
+.ficha-estandar {
+  width: 280px;
+}
+
+.ficha-photo-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.ficha-logo-img {
+  height: 92px;
+  width: auto;
+  align-self: flex-start;
+  border-radius: var(--radius-sm);
+}
+
+.ficha-logo {
+  height: 76px;
+  width: 76px;
+}
+
+.ficha-cat {
+  font-family: var(--font-cooper);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lenga-orange);
+}
+
+.ficha-name {
+  font-size: 1.3rem;
+}
+
+.ficha-desc {
+  font-family: var(--font-neue);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--lenga-gray-dark);
+}
+
+.ficha-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.ficha-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--lenga-gray-dark);
+  font-family: var(--font-cooper);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.chip-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ficha-card figcaption {
+  margin-top: var(--space-4);
+  font-size: 0.82rem;
+  color: var(--lenga-gray);
+  text-align: center;
+}
+
+.dir-note {
+  font-size: 0.8rem;
+  color: var(--lenga-gray);
+  max-width: min(56ch, 100%);
+}
+
+.dir-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-align: left;
+  max-width: 460px;
+  width: 100%;
+}
+
+.dir-list li {
+  position: relative;
+  padding: var(--space-3) var(--space-4) var(--space-3) 44px;
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  color: var(--lenga-gray-dark);
+}
+
+.dir-list li::before {
+  content: '✓';
+  position: absolute;
+  left: var(--space-4);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Franja de beneficio: tarjeta oliva oscura */
+.dir-franja-wrap {
+  padding-top: 0;
+}
+
+.dir-franja {
+  width: 100%;
+  max-width: 720px;
+  background: var(--lenga-olive);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) clamp(20px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dir-franja-tag {
+  font-family: var(--font-cooper);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+}
+
+.dir-franja p {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-neue);
+  line-height: 1.65;
+}
+
+.dir-banners-text,
+.dir-cta-text {
+  color: var(--lenga-gray-dark);
+  font-family: var(--font-neue);
+  line-height: 1.65;
+  max-width: min(56ch, 100%);
+}
+
+.dir-cta h2 {
+  max-width: min(24ch, 100%);
+  line-height: 1.2;
+}
+
+/* ---------- Responsive ---------- */
 
 @media (max-width: 560px) {
   .site-header {
     flex-direction: column;
-    gap: 14px;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 20px;
+  }
+
+  .dir-fichas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ficha-estandar {
+    width: 320px;
+    max-width: 100%;
   }
 }
