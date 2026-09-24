@@ -8,6 +8,9 @@
     <title>Lenga Editorial</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- gtag.js se carga desde JS (src/analytics/gtag.js); el preconnect
+         adelanta el handshake para que el primer page_view no llegue tarde. -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <!-- Fallbacks del design system: Montserrat ≈ Mont, Barlow ≈ Cooper Hewitt.
          Al tener los archivos licenciados, agregar @font-face y las familias
          'Mont' / 'Cooper Hewitt' (primeras en los stacks) toman el control. -->

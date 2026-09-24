@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import isotipoVerde from '../assets/isotipo-verde.svg'
 import { CONTACT_EMAIL, CONTACT_PHONE } from '../constants'
 
@@ -17,14 +16,12 @@ const FEATURES = [
   },
 ]
 
+// El título de la pestaña lo setea usePageViews desde analytics/pages.js, para
+// que page_title en GA4 nunca quede desfasado de la ruta.
 function Home() {
-  useEffect(() => {
-    document.title = 'Lenga Editorial'
-  }, [])
-
   return (
     <main id="top">
-      <section className="hero">
+      <section className="hero" data-ga-section="home_hero">
         <span className="eyebrow">Cartografía ilustrada de Chiloé</span>
         <h1>Estamos tejiendo un sitio nuevo</h1>
         <p className="hero-text">
@@ -32,14 +29,23 @@ function Home() {
           aquí nuestros mapas ilustrados y ediciones de colección.
         </p>
         <div className="hero-actions">
-          <a className="button" href={`mailto:${CONTACT_EMAIL}`}>
+          <a
+            className="button"
+            href={`mailto:${CONTACT_EMAIL}`}
+            data-ga-location="home_hero"
+            data-ga-label="Escríbenos"
+          >
             Escríbenos
           </a>
           <span className="tag">Sitio en construcción</span>
         </div>
       </section>
 
-      <section id="que-hacemos" className="section features">
+      <section
+        id="que-hacemos"
+        className="section features"
+        data-ga-section="home_que_hacemos"
+      >
         <div className="features-head">
           <img src={isotipoVerde} alt="" aria-hidden="true" className="features-leaf" />
           <h2>Qué hacemos</h2>
@@ -54,12 +60,26 @@ function Home() {
         </div>
       </section>
 
-      <section id="contacto" className="section contact">
+      <section
+        id="contacto"
+        className="section contact"
+        data-ga-section="home_contacto"
+      >
         <h2>Conversemos</h2>
         <p>Mientras terminamos el sitio, puedes escribirnos directamente.</p>
         <div className="contact-links">
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          <a href={`tel:${CONTACT_PHONE.replace(/\s+/g, '')}`}>
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            data-ga-location="home_contacto"
+            data-ga-label="Correo"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          <a
+            href={`tel:${CONTACT_PHONE.replace(/\s+/g, '')}`}
+            data-ga-location="home_contacto"
+            data-ga-label="Teléfono"
+          >
             {CONTACT_PHONE}
           </a>
         </div>

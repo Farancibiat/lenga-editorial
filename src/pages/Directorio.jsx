@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import MapaCastroLogo from '../components/MapaCastroLogo.jsx'
 import fotoAnosLuz from '../assets/anos-luz.jpg'
 import logoAnosLuz from '../assets/logo-anos-luz.png'
@@ -70,14 +69,11 @@ function ContactChip({ type, label }) {
   )
 }
 
+// El título de la pestaña lo setea usePageViews desde analytics/pages.js.
 function Directorio() {
-  useEffect(() => {
-    document.title = 'Directorio · Mapa Castro 2027 — Lenga Editorial'
-  }, [])
-
   return (
     <main>
-      <section className="hero dir-hero">
+      <section className="hero dir-hero" data-ga-section="dir_hero">
         <MapaCastroLogo />
         <span className="eyebrow">Mapa Castro 2027</span>
         <h1>Directorio</h1>
@@ -93,7 +89,7 @@ function Directorio() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" data-ga-section="dir_fichas">
         <h2>Así se verá tu ficha</h2>
         <div className="dir-fichas">
           <figure className="ficha-card ficha-destacada">
@@ -152,7 +148,7 @@ function Directorio() {
         </p>
       </section>
 
-      <section className="section">
+      <section className="section" data-ga-section="dir_que_incluye">
         <h2>Qué incluye tu ficha</h2>
         <ul className="dir-list">
           {FICHA_INCLUYE.map((item) => (
@@ -161,7 +157,10 @@ function Directorio() {
         </ul>
       </section>
 
-      <section className="section dir-franja-wrap">
+      <section
+        className="section dir-franja-wrap"
+        data-ga-section="dir_franja_incluido"
+      >
         <div className="dir-franja">
           <span className="dir-franja-tag">Incluido en todos los planes</span>
           <p>
@@ -172,7 +171,7 @@ function Directorio() {
         </div>
       </section>
 
-      <section className="section dir-banners">
+      <section className="section dir-banners" data-ga-section="dir_banners">
         <h2>Publicidad en el sitio web</h2>
         <p className="dir-banners-text">
           Además de las fichas del directorio, el sitio web tendrá espacios
@@ -183,14 +182,19 @@ function Directorio() {
         </p>
       </section>
 
-      <section className="section dir-cta">
+      <section className="section dir-cta" data-ga-section="dir_cta">
         <h2>Sé uno de esos detalles que vale la pena descubrir</h2>
         <p className="dir-cta-text">
           Reserva tu espacio en Mapa Castro 2027 y asegura tu ficha en el
           directorio desde el primer día.
         </p>
         <div className="hero-actions">
-          <a className="button" href={MAILTO_PREVENTA}>
+          <a
+            className="button"
+            href={MAILTO_PREVENTA}
+            data-ga-location="dir_cta"
+            data-ga-label="Escríbenos"
+          >
             Escríbenos
           </a>
           <a
@@ -198,6 +202,8 @@ function Directorio() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noreferrer"
+            data-ga-location="dir_cta"
+            data-ga-label="WhatsApp"
           >
             WhatsApp
           </a>

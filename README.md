@@ -14,3 +14,12 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the Oxlint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+## Analytics
+
+El sitio mide con Google Analytics 4 desde [`src/analytics/`](src/analytics/).
+Necesita la variable `VITE_GA_MEASUREMENT_ID` en el build (ver
+[`.env.example`](.env.example)); sin ella no envía nada.
+
+Eventos, dimensiones personalizadas y los pasos de configuración en la
+plataforma de GA4 están en **[docs/analytics.md](docs/analytics.md)**.
