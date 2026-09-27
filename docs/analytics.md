@@ -28,13 +28,18 @@ y el build ni siquiera incluye el código de gtag.
 
 ### Secciones (`section_id`)
 
-`home_hero`, `home_que_hacemos`, `home_contacto`,
+`home_hero`, `home_que_hacemos`, `footer_contacto`,
 `dir_hero`, `dir_fichas`, `dir_que_incluye`, `dir_franja_incluido`,
 `dir_banners`, `dir_cta`
 
+`footer_contacto` no usa `data-ga-section`: el footer es sticky (efecto
+cortina) y el IntersectionObserver lo daría por visto apenas carga la página.
+Lo reporta `useActiveSection` cuando el contenido ya dejó ver la mitad del
+pie.
+
 ### Ubicaciones de enlace (`link_location`)
 
-`header`, `home_hero`, `home_contacto`, `dir_cta`
+`header`, `footer`, `whatsapp_flotante`, `dir_cta`
 
 ### Cómo instrumentar algo nuevo
 

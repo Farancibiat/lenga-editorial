@@ -1,3 +1,15 @@
+/* Helvetica Neue Bold local (menú de navegación y footer). Subset Latin en
+   WOFF2 generado desde HelveticaNeueBold.otf: ~20 KB en vez de 600 KB. Se
+   declara con nombre propio para que el stack --font-neue (peso 400) no la
+   tome como su única variante y ponga todo en negrita. */
+@font-face {
+  font-family: 'Helvetica Neue Lenga';
+  src: url('./assets/fonts/HelveticaNeue-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Paleta principal — verdes lenga + negro y oliva de marca */
   --lenga-green-deep: #004d0a;
@@ -31,6 +43,7 @@
   --font-mont: 'Mont', 'Montserrat', sans-serif;
   --font-cooper: 'Cooper Hewitt', 'Barlow', sans-serif;
   --font-neue: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  --font-neue-bold: 'Helvetica Neue Lenga', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 
   /* Escala tipográfica */
   --text-display: clamp(2.6rem, 6vw, 4rem);
@@ -56,9 +69,15 @@
   --radius-lg: 20px;
   --radius-pill: 999px;
   --shadow-raised: 0 12px 32px -20px rgba(0, 0, 0, 0.28);
+  /* Sombra del nav: misma dirección y color que la del Figma (x -6, y 12,
+     blur 8, #51524f), atenuada para que sólo despegue el blanco del gris. */
+  --shadow-nav: -6px 12px 8px -6px rgba(81, 82, 79, 0.45);
 
   /* Layout */
-  --header-h: 72px;
+  --header-h: 77px;
+  /* Unidad del lienzo del Figma (1920 px de ancho): 1px a 1720 px de
+     viewport o más, y proporcional por debajo. */
+  --u: min(1px, calc(100vw / 1720));
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -89,9 +108,39 @@ body {
   padding-top: var(--header-h);
 }
 
+/* clip y no hidden: hidden convierte a #root en contenedor de scroll y el
+   footer sticky (efecto cortina) dejaría de pegarse al borde del viewport. */
 #root {
   min-height: 100svh;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Sin animaciones de scroll: AOS desactivado (celulares, ver main.jsx) o
+   preferencia de movimiento reducido, que AOS no respeta por sí solo. */
+.aos-disabled [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 h1,
@@ -122,6 +171,7 @@ button {
 
 @media (max-width: 560px) {
   :root {
-    --header-h: 116px;
+    /* logo arriba y menú abajo */
+    --header-h: 108px;
   }
 }

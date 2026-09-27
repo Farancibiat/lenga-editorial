@@ -1,88 +1,103 @@
-import isotipoVerde from '../assets/isotipo-verde.svg'
-import { CONTACT_EMAIL, CONTACT_PHONE } from '../constants'
+import titulo from '../assets/home/titulo-mapa-castro.svg'
+import historiaLocal from '../assets/home/historia-local.svg'
+import mapasCastro from '../assets/home/mapas-castro.webp'
+import mapaChiloe from '../assets/home/mapa-chiloe-2019.webp'
+import ultimaVersion from '../assets/home/ultima-version-2019.svg'
+import elMapa from '../assets/home/el-mapa.svg'
+import hechoAMano from '../assets/home/hecho-a-mano.svg'
+import iglesia from '../assets/home/iglesia-castro.webp'
 
-const FEATURES = [
-  {
-    title: 'Mapas ilustrados',
-    text: 'Dibujamos a mano, en acuarela, calle a calle, los rincones de Chiloé.',
-  },
-  {
-    title: 'Ediciones de colección',
-    text: 'Piezas numeradas y enmarcadas, pensadas para durar en el tiempo.',
-  },
-  {
-    title: 'Identidad local',
-    text: 'Cada mapa reúne el comercio y los oficios que dan vida a cada ciudad.',
-  },
-]
-
-// El título de la pestaña lo setea usePageViews desde analytics/pages.js, para
-// que page_title en GA4 nunca quede desfasado de la ruta.
+// Composición del Figma "Landing_Lenga" (lienzo de 1920 px). Cada bloque se
+// ubica con --x / --y / --w en px del Figma (ver .home-canvas en App.css);
+// los textos van contorneados en SVG para calzar exacto con la tipografía
+// Mont del diseño, y su contenido real queda en .sr-only para lectores de
+// pantalla y buscadores.
+//
+// data-aos: animación de entrada al hacer scroll (AOS, igual que
+// orbeconsultores.com). El título de la pestaña lo setea usePageViews desde
+// analytics/pages.js.
 function Home() {
   return (
-    <main id="top">
-      <section className="hero" data-ga-section="home_hero">
-        <span className="eyebrow">Cartografía ilustrada de Chiloé</span>
-        <h1>Estamos tejiendo un sitio nuevo</h1>
-        <p className="hero-text">
-          lengaeditorial.cl se está preparando. Muy pronto podrás conocer
-          aquí nuestros mapas ilustrados y ediciones de colección.
-        </p>
-        <div className="hero-actions">
-          <a
-            className="button"
-            href={`mailto:${CONTACT_EMAIL}`}
-            data-ga-location="home_hero"
-            data-ga-label="Escríbenos"
-          >
-            Escríbenos
-          </a>
-          <span className="tag">Sitio en construcción</span>
+    <main id="top" className="home">
+      <section
+        id="inicio"
+        className="home-canvas home-hero"
+        data-ga-section="home_hero"
+      >
+        <h1 className="home-titulo" data-aos="fade-up">
+          <span className="sr-only">Mapa Castro está de vuelta</span>
+          <img src={titulo} alt="" width="452" height="111" />
+        </h1>
+
+        <div className="home-historia" data-aos="fade-up" data-aos-delay="150">
+          <h2 className="sr-only">Historia local</h2>
+          <p className="sr-only">15 años de evolución local ilustrados</p>
+          <img src={historiaLocal} alt="" width="409" height="220" />
         </div>
+
+        <img
+          className="home-mapas"
+          src={mapasCastro}
+          alt="Ediciones del Mapa Castro desplegadas"
+          width="608"
+          height="455"
+          fetchPriority="high"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        />
       </section>
 
       <section
         id="que-hacemos"
-        className="section features"
+        className="home-canvas home-que-hacemos"
         data-ga-section="home_que_hacemos"
       >
-        <div className="features-head">
-          <img src={isotipoVerde} alt="" aria-hidden="true" className="features-leaf" />
-          <h2>Qué hacemos</h2>
-        </div>
-        <div className="feature-grid">
-          {FEATURES.map((feature) => (
-            <article className="feature-card" key={feature.title}>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        <figure className="home-folleto" data-aos="fade-up">
+          <img
+            className="home-folleto-img"
+            src={mapaChiloe}
+            alt="Portada del Mapa Chiloé 2019"
+            width="677"
+            height="363"
+            loading="lazy"
+          />
+          <figcaption
+            className="home-folleto-nota"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <span className="sr-only">2019 · Última versión</span>
+            <img src={ultimaVersion} alt="" width="155" height="163" />
+          </figcaption>
+        </figure>
 
-      <section
-        id="contacto"
-        className="section contact"
-        data-ga-section="home_contacto"
-      >
-        <h2>Conversemos</h2>
-        <p>Mientras terminamos el sitio, puedes escribirnos directamente.</p>
-        <div className="contact-links">
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            data-ga-location="home_contacto"
-            data-ga-label="Correo"
-          >
-            {CONTACT_EMAIL}
-          </a>
-          <a
-            href={`tel:${CONTACT_PHONE.replace(/\s+/g, '')}`}
-            data-ga-location="home_contacto"
-            data-ga-label="Teléfono"
-          >
-            {CONTACT_PHONE}
-          </a>
+        <div className="home-el-mapa" data-aos="fade-up" data-aos-delay="200">
+          <h2 className="sr-only">El mapa</h2>
+          <p className="sr-only">
+            350.000 impresiones desde 2005-2019. 15 ediciones. 25.000
+            impresiones por año.
+          </p>
+          <img src={elMapa} alt="" width="418" height="275" loading="lazy" />
         </div>
+
+        <div className="home-hecho" data-aos="fade-up">
+          <h2 className="sr-only">Hecho a mano</h2>
+          <p className="sr-only">
+            100% acuarela. Ilustrada edificio por edificio.
+          </p>
+          <img src={hechoAMano} alt="" width="529" height="150" loading="lazy" />
+        </div>
+
+        <img
+          className="home-iglesia"
+          src={iglesia}
+          alt="Iglesia de San Francisco de Castro ilustrada en acuarela"
+          width="535"
+          height="704"
+          loading="lazy"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        />
       </section>
     </main>
   )

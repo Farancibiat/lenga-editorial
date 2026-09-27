@@ -94,6 +94,21 @@ export function useScrollDepth() {
 
 let sectionState = { path: null, fired: new Set() }
 
+// Una section_view por sección y ruta. Exportada para las secciones que el
+// IntersectionObserver no puede juzgar: el footer es sticky y, tapado por el
+// contenido, igual cuenta como "en pantalla" (ver useActiveSection).
+export function reportSectionView(id, pathname) {
+  if (sectionState.path !== pathname) {
+    sectionState = { path: pathname, fired: new Set() }
+  }
+  if (!id || sectionState.fired.has(id)) return
+  sectionState.fired.add(id)
+  trackEvent(EVENTS.SECTION_VIEW, {
+    [PARAMS.SECTION_ID]: id,
+    [PARAMS.PAGE_NAME]: getPageMeta(pathname).name,
+  })
+}
+
 export function useSectionViews() {
   const { pathname } = useLocation()
 
@@ -102,7 +117,6 @@ export function useSectionViews() {
     if (sectionState.path !== pathname) {
       sectionState = { path: pathname, fired: new Set() }
     }
-    const meta = getPageMeta(pathname)
     const nodes = document.querySelectorAll('[data-ga-section]')
     if (!nodes.length) return
 
@@ -117,14 +131,8 @@ export function useSectionViews() {
             entry.intersectionRect.height >= window.innerHeight * 0.5
           if (!seenEnough) continue
 
-          const id = entry.target.dataset.gaSection
-          if (!id || sectionState.fired.has(id)) continue
-          sectionState.fired.add(id)
           observer.unobserve(entry.target)
-          trackEvent(EVENTS.SECTION_VIEW, {
-            [PARAMS.SECTION_ID]: id,
-            [PARAMS.PAGE_NAME]: meta.name,
-          })
+          reportSectionView(entry.target.dataset.gaSection, pathname)
         }
       },
       { threshold: [0, 0.1, 0.25, 0.4, 0.75, 1] },
