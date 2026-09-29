@@ -243,7 +243,18 @@ en `.gitignore`, así que no se sube al repo.
 
 Después **Deploys → Trigger deploy → Clear cache and deploy site**.
 Vite inyecta las variables **en el build**, no en runtime: sin un deploy nuevo
-la variable no existe para el sitio publicado.
+la variable no existe para el sitio publicado. Cambiar una variable **no**
+dispara build por sí sola.
+
+> **Limitar la variable al contexto de producción.** Al crearla, Netlify la
+> aplica a *todos* los contextos por defecto, así que los **deploy previews** y
+> las **branch deploys** (`*.netlify.app`) también envían datos a la misma
+> propiedad y mezclan tráfico de pruebas con el real. En la variable →
+> *Options* → **Edit scope** o *"Different value for each deploy context"* →
+> dejar el ID **sólo en Production** y vacío en el resto.
+
+`VITE_GA_DEBUG` **nunca** debe existir en Netlify: marca todo el tráfico real
+como tráfico de desarrollador. Es sólo para `.env.local`.
 
 ---
 
@@ -277,6 +288,49 @@ Si más adelante se agrega un banner de cookies: setear
 `VITE_GA_CONSENT_DEFAULT=denied` y llamar a `updateConsent(true)` desde
 `src/analytics/gtag.js` cuando la persona acepte.
 
+### "Tasa de consentimiento del 0 %" en Diagnóstico de Etiqueta
+
+Hay que distinguir dos situaciones, y sólo una es esperada.
+
+**Esperado:** las tres señales de *ads* (`ad_storage`, `ad_user_data`,
+`ad_personalization`) van denegadas a propósito — el sitio no hace publicidad.
+GA4 igual marca la alerta porque el diagnóstico está escrito para anunciantes.
+Con `analytics_storage: granted`, la medición funciona completa: adquisición,
+interacción, eventos, eventos clave, tecnología y geografía.
+
+Lo único que se pierde son los informes **Datos demográficos e Intereses**, que
+vienen de Google Signals y requieren `ad_storage`. No es una pérdida real a
+este volumen: GA4 aplica umbrales de anonimato y los suprime cuando hay pocos
+usuarios, así que llegarían vacíos igual.
+
+**Problema real:** si además `analytics_storage` está denegado, GA4 no escribe
+la cookie `_ga`. Los eventos siguen llegando como *pings* sin cookies —
+Tiempo real muestra actividad y parece que todo anda— pero sin identificar
+usuarios: las sesiones se fragmentan, no se distingue visitante nuevo de
+recurrente y los informes quedan modelados y poco fiables.
+
+Cómo distinguirlos, en el bundle de producción:
+
+```bash
+grep -o 'consent`,`default`.\{0,200\}' /tmp/live.js
+```
+
+`analytics_storage` apunta a una variable minificada; hay que ver su valor:
+
+```bash
+grep -o '.\{70\}_r=`[a-z]*`' /tmp/live.js   # ajustar el nombre de la variable
+```
+
+Si sale `denied`, quedó **`VITE_GA_CONSENT_DEFAULT=denied` en las variables de
+Netlify**. Esa variable es sólo para cuando exista un banner de cookies que
+llame a `updateConsent(true)`. Sin banner, deja la medición a medias:
+**borrarla de Netlify y redesplegar**.
+
+**Conviene dejar denegadas sólo las de ads.** Conceder señales publicitarias sin
+banner sería discutible para visitantes del EEE (Chiloé recibe turismo europeo)
+y frente a la Ley 21.719, vigente desde diciembre de 2026. Si algún día se hace
+campañas en Google Ads, se revisa entonces — junto con el banner.
+
 ---
 
 ## 6. Pendientes conocidos
@@ -299,3 +353,56 @@ archivo estático y no está enlazado desde ninguna página. GA4 no puede ver es
 descargas (un PDF no ejecuta JavaScript). Si interesa medirlas, basta con
 enlazarlo desde el sitio: el evento `file_download` ya está cableado y lo toma
 automáticamente.
+
+---
+
+## 7. Si GA4 dice que "no recibe datos"
+
+**Antes que nada: no seguir el asistente de Google.** En *Tareas* → *Configura la
+recogida de datos* → **Tomar medidas**, Google propone pegar el snippet de gtag
+en el HTML. La etiqueta **ya está instalada** desde `src/analytics/gtag.js`.
+Pegarla otra vez deja el sitio con **doble instalación**: cada `page_view` se
+contaría dos veces y todas las métricas quedarían infladas.
+
+Esa pantalla de *Tareas* es un checklist de onboarding, no un diagnóstico: las
+tareas se desbloquean sólo después de que GA4 procese datos, y va con retraso.
+
+### Verificar la instalación desde la terminal
+
+```bash
+# 1. Qué bundle sirve producción
+curl -sL https://lengaeditorial.cl/ | grep -oE '/assets/index-[A-Za-z0-9_-]+\.js'
+
+# 2. Bajarlo y revisar el tag (reemplazar el nombre del bundle)
+curl -sL https://lengaeditorial.cl/assets/index-XXXX.js -o /tmp/live.js
+grep -o 'G-8V7KXQ9SHR' /tmp/live.js            # ID inyectado
+grep -o 'googletagmanager.com/gtag/js' /tmp/live.js   # cargador presente
+grep -o 'xr(`config`.\{0,90\}' /tmp/live.js    # debe decir debug_mode:void 0
+```
+
+Si `debug_mode` sale `!0` (true), quedó `VITE_GA_DEBUG` en las variables de
+Netlify: borrarla y **Deploys → Trigger deploy → Clear cache and deploy site**.
+Cambiar una variable de entorno **no** dispara build por sí sola.
+
+### Verificar que la etiqueta dispara, en 30 segundos
+
+1. Abrir https://lengaeditorial.cl en una ventana de incógnito.
+2. **F12 → pestaña Red (Network)** → filtrar por `collect`.
+3. Recargar.
+
+Tiene que aparecer una petición a `.../g/collect?v=2&tid=G-8V7KXQ9SHR&en=page_view`
+con estado **204**. Si aparece, la medición funciona y lo que falta es sólo
+tiempo de procesamiento.
+
+> **Los bloqueadores de anuncios bloquean Google Analytics.** uBlock, AdGuard,
+> Brave y el modo estricto de Firefox cancelan esa petición. Es la causa más
+> común de "mi GA no funciona": probar en incógnito y sin extensiones.
+
+### Si no aparece la petición
+
+- **Filtro de tráfico interno**: si quedó en *Activo* con tu IP, tus propias
+  visitas se descartan en todas partes, incluido Tiempo real. Pasarlo a
+  *Probando* mientras diagnosticas, o probar desde datos móviles.
+- **Plazos**: *Tiempo real* muestra en minutos; los **Informes tardan 24–48 h**
+  y una propiedad nueva muestra "sin datos" todo el primer día aunque todo esté
+  bien.
