@@ -11,9 +11,10 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
-  padding: 0 clamp(20px, 6vw, 72px);
+  /* Figma: logo a 82 px del borde izquierdo y menú a ~135 px del derecho */
+  padding: 0 clamp(20px, 7vw, 135px) 0 clamp(20px, 4.27vw, 82px);
   background: var(--surface-card);
-  border-bottom: 1px solid var(--lenga-gray-light);
+  box-shadow: var(--shadow-nav);
 }
 
 .brand {
@@ -23,26 +24,72 @@
 }
 
 .brand-logo {
-  height: 52px;
-  width: auto;
+  width: 226px;
+  height: auto;
 }
 
+/* Menú: Helvetica Neue Bold 12 px, gris #51524f; el ítem bajo la viñeta
+   pasa a negro. */
 .site-nav {
+  position: relative;
+  font-family: var(--font-neue-bold);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.site-nav ul {
+  position: relative;
+  z-index: 1;
   display: flex;
-  gap: clamp(16px, 3vw, 32px);
-  font-family: var(--font-cooper);
-  font-size: 0.95rem;
-  font-weight: 500;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .site-nav a {
+  display: block;
+  height: 36px;
+  padding: 0 12px;
+  /* 37 y no 36: baja el texto 1 px para centrarlo en la cara blanca de la
+     viñeta y no en su sombra. */
+  line-height: 37px;
+  white-space: nowrap;
   text-decoration: none;
-  color: var(--lenga-gray);
-  transition: color 0.2s ease;
+  color: var(--lenga-gray-dark);
+  transition: color 0.35s ease;
 }
 
-.site-nav a:hover {
-  color: var(--accent);
+.site-nav a.is-current {
+  color: var(--lenga-black);
+}
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-pill);
+}
+
+/* La viñeta es hover_menu.svg como border-image: los 18 px de cada punta no
+   se deforman y sólo se estira el tramo recto, así calza con cualquier ancho
+   de ítem. */
+.nav-pill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 36px;
+  margin-top: -18px;
+  border-style: solid;
+  border-width: 0 18px;
+  border-image: url('./assets/nav-pill.svg') 0 18 fill / 0 18px / 0 stretch;
+  pointer-events: none;
+}
+
+.nav-pill.is-animated {
+  transition:
+    transform 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+    width 0.55s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 main {
@@ -164,94 +211,306 @@ main {
   font-size: var(--text-h2);
 }
 
-/* ---------- Home: features y contacto ---------- */
+/* ---------- Home: composición del Figma ---------- */
 
-.features-head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
+/* Cada bloque lleva su posición en px del lienzo de 1920 del Figma
+   (--x desde el borde izquierdo, --y desde el tope de su sección, --w de
+   ancho). Se miden desde el centro, así el conjunto queda centrado y escala
+   con --u en pantallas más angostas. */
+.home-canvas {
+  position: relative;
+  height: calc(var(--h) * var(--u));
 }
 
-.features-leaf {
-  width: 52px;
-  height: 52px;
+.home-hero {
+  --h: 640;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--space-5);
+.home-que-hacemos {
+  --h: 1383;
+}
+
+.home-canvas > * {
+  position: absolute;
+  left: calc(50% + (var(--x) - 960) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: auto;
+  margin: 0;
+}
+
+.home-canvas > * > img {
+  display: block;
   width: 100%;
-  max-width: 1000px;
+  height: auto;
 }
 
-.feature-card {
-  background: var(--surface-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-raised);
-  padding: var(--space-6) var(--space-5);
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+.home-titulo { --x: 365; --y: 149; --w: 452; --mw: 86%; }
+.home-historia { --x: 408; --y: 313; --w: 409; --mw: 80%; }
+.home-mapas { --x: 960; --y: 128; --w: 608; --mw: 100%; }
+.home-folleto { --x: 259; --y: 60; --w: 795.75; --mw: 100%; }
+.home-el-mapa { --x: 1150; --y: 67; --w: 418; --mw: 88%; }
+.home-hecho { --x: 348; --y: 886; --w: 529; --mw: 92%; }
+.home-iglesia { --x: 1033; --y: 530; --w: 535; --mw: 86%; }
+
+/* Folleto + nota "2019 Última versión": la línea naranja nace en el borde
+   derecho del folleto, por eso van juntos y en % del grupo. */
+.home-folleto > .home-folleto-img {
+  width: 85.01%;
 }
 
-.feature-card h3 {
-  font-size: 1.1rem;
+.home-folleto-nota {
+  position: absolute;
+  left: 80.55%;
+  top: 36.14%;
+  width: 19.45%;
 }
 
-.feature-card p {
-  color: var(--lenga-gray-dark);
-  font-size: 0.95rem;
+.home-folleto-nota img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-.contact p {
-  color: var(--lenga-gray-dark);
-  max-width: min(44ch, 100%);
+/* ---------- Contenido vs. footer (efecto cortina) ---------- */
+
+.site-content {
+  position: relative;
+  z-index: 2;
+  background: var(--surface-page);
 }
 
-.contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-4) var(--space-6);
-  font-family: var(--font-cooper);
-  font-weight: 600;
-}
+/* ---------- Footer ---------- */
 
-.contact-links a {
-  text-decoration: none;
-  color: var(--accent);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.contact-links a:hover {
-  border-color: var(--accent);
-}
-
-/* ---------- Footer (pie oliva) ---------- */
-
+/* sticky + z-index menor que .site-content: queda quieto detrás del
+   contenido y se descubre al llegar al final. Alto del Figma (996 px a
+   1920) sin pasar el alto de la pantalla, para que se vea completo. */
 .site-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-6) 24px;
-  background: var(--lenga-olive);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  height: max(
+    calc(640 * var(--u)),
+    min(calc(996 * var(--u)), calc(100svh - var(--header-h)))
+  );
+  overflow: hidden;
+  background: var(--lenga-olive) url('./assets/home/textura-footer.webp')
+    center bottom / cover no-repeat;
+  color: #ffffff;
+  font-family: var(--font-neue-bold);
+  font-weight: 700;
+}
+
+/* Posiciones del Figma medidas desde el borde inferior: si la pantalla es
+   baja se recorta la textura de arriba, no el contenido. */
+.footer-canvas {
+  position: relative;
+  height: 100%;
+}
+
+.footer-canvas > * {
+  position: absolute;
+  left: calc(50% + (var(--x) - 960) * var(--u));
+  bottom: calc(var(--b) * var(--u));
+  margin: 0;
 }
 
 .footer-logo {
-  height: 44px;
-  width: auto;
+  --x: 182;
+  --b: 368;
+  width: calc(406 * var(--u));
+  height: auto;
+}
+
+.footer-nav {
+  --x: 810;
+  --b: 316;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: calc(32.25 * var(--u));
+  line-height: 2;
+}
+
+.footer-nav a,
+.footer-mail {
+  text-decoration: none;
+}
+
+.footer-nav a {
+  color: #ffffff;
+  transition: opacity 0.2s ease;
+}
+
+.footer-nav a:hover {
+  opacity: 0.75;
+}
+
+.footer-contact {
+  --x: 1376.4;
+  --b: 426;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(13 * var(--u));
+  width: calc(310.6 * var(--u));
+}
+
+.footer-contact-title {
+  font-size: calc(25.5 * var(--u));
+  line-height: 1;
+  color: var(--surface-page);
+}
+
+/* Botón del Figma: píldora blanca con borde fino y sombra negra dura */
+.footer-mail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(65 * var(--u));
+  border: 1px solid var(--lenga-black);
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  box-shadow: calc(3 * var(--u)) calc(4.5 * var(--u)) 0 var(--lenga-black);
+  color: var(--lenga-black);
+  font-size: calc(18.2 * var(--u));
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.footer-mail:hover {
+  transform: translate(calc(1.5 * var(--u)), calc(2.5 * var(--u)));
+  box-shadow: calc(1.5 * var(--u)) calc(2 * var(--u)) 0 var(--lenga-black);
 }
 
 .footer-copy {
-  margin-left: var(--space-3);
-  opacity: 0.75;
+  --x: 1474;
+  --b: 81;
+  font-size: calc(18.7 * var(--u));
+  line-height: 1;
+}
+
+.footer-nav a:focus-visible,
+.footer-mail:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 4px;
+}
+
+/* ---------- Viñeta fija de WhatsApp ---------- */
+
+/* Bloque del Figma (247 × 204 px): burbuja, marca Mapa Castro e íconos. */
+.wa-float {
+  position: fixed;
+  right: clamp(16px, 3vw, 57px);
+  /* Lo bastante alto para no pisar el © del footer al final de la página */
+  bottom: clamp(16px, 12vh, 130px);
+  z-index: 90;
+  width: 247px;
+  height: 204px;
+  transform-origin: 100% 100%;
+  animation: wa-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s backwards;
+}
+
+.wa-float > * {
+  position: absolute;
+  display: block;
+  height: auto;
+}
+
+.wa-burbuja {
+  left: 58.2px;
+  top: 0;
+  width: 188.5px;
+  transform-origin: 85% 100%;
+  animation: wa-burbuja-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.3s backwards;
+}
+
+.wa-icono-mapa {
+  left: 0;
+  top: 133.4px;
+  width: 64.45px;
+}
+
+.wa-marca {
+  left: 66.6px;
+  top: 147.5px;
+  width: 103.9px;
+}
+
+.wa-marca img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease;
+}
+
+.wa-marca img + img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.is-on-footer .wa-marca img:first-child {
+  opacity: 0;
+}
+
+.is-on-footer .wa-marca img + img {
+  opacity: 1;
+}
+
+.wa-icono {
+  left: 183.4px;
+  top: 141.5px;
+  width: 62.05px;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+.wa-float:hover .wa-icono,
+.wa-float:focus-visible .wa-icono {
+  transform: scale(1.08);
+}
+
+.wa-float:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: var(--radius-md);
+}
+
+@keyframes wa-in {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+
+@keyframes wa-burbuja-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-float,
+  .wa-burbuja {
+    animation: none;
+  }
+}
+
+/* La composición se achica con --u; la viñeta acompaña por tramos. */
+@media (max-width: 1440px) {
+  .wa-float {
+    scale: 0.86;
+  }
+}
+
+@media (max-width: 1200px) {
+  .wa-float {
+    scale: 0.78;
+  }
 }
 
 /* ---------- Submarca Mapa Castro ---------- */
@@ -497,12 +756,124 @@ main {
 
 /* ---------- Responsive ---------- */
 
+/* Bajo 900 px la composición libre del Figma ya no se lee: los bloques pasan
+   a una columna, en el orden del documento. */
+@media (max-width: 900px) {
+  .home-canvas {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    padding: 48px 20px;
+  }
+
+  .home-canvas > * {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: min(calc(var(--w) * 1px), var(--mw));
+  }
+
+  .site-footer {
+    height: auto;
+    padding: 56px 24px 32px;
+  }
+
+  .footer-canvas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .footer-canvas > * {
+    position: static;
+  }
+
+  .footer-logo {
+    width: 200px;
+  }
+
+  .footer-nav {
+    align-items: center;
+    font-size: 20px;
+  }
+
+  .footer-contact {
+    width: min(300px, 100%);
+    gap: 12px;
+  }
+
+  .footer-contact-title {
+    font-size: 18px;
+  }
+
+  .footer-mail {
+    height: 54px;
+    font-size: 16px;
+    box-shadow: 3px 4.5px 0 var(--lenga-black);
+  }
+
+  .footer-mail:hover {
+    transform: translate(1.5px, 2.5px);
+    box-shadow: 1.5px 2px 0 var(--lenga-black);
+  }
+
+  .footer-copy {
+    font-size: 14px;
+  }
+
+  .wa-float {
+    bottom: 16px;
+    scale: 0.75;
+  }
+
+  .wa-burbuja,
+  .wa-icono-mapa,
+  .wa-marca {
+    transition: opacity 0.3s ease;
+  }
+
+  .is-on-footer .wa-burbuja,
+  .is-on-footer .wa-icono-mapa,
+  .is-on-footer .wa-marca {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Un footer más alto que la pantalla nunca se vería entero como cortina:
+   en pantallas bajas vuelve a ser un pie normal. */
+@media (max-width: 900px) and (max-height: 640px) {
+  .site-footer {
+    position: relative;
+  }
+}
+
 @media (max-width: 560px) {
   .site-header {
     flex-direction: column;
     justify-content: center;
-    gap: var(--space-2);
-    padding: var(--space-3) 20px;
+    gap: 4px;
+    padding: 8px 12px;
+  }
+
+  .brand-logo {
+    width: 180px;
+  }
+
+  .site-nav ul {
+    gap: 2px;
+  }
+
+  .site-nav a {
+    padding: 0 10px;
+  }
+
+  .wa-float {
+    scale: 0.66;
   }
 
   .dir-fichas {
