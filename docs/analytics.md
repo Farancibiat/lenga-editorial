@@ -22,7 +22,7 @@ y el build ni siquiera incluye el código de gtag.
 | `file_download` | Clic a un PDF, imagen, doc, etc. | `link_url`, `link_location`, `link_label` |
 | `nav_click` | Clic en un enlace interno marcado con `data-ga-location`. | `link_url`, `link_location`, `link_label` |
 | `scroll_depth` | Al cruzar 25 / 50 / 75 / 100 % de la página. Una vez por ruta. | `scroll_percent`, `page_name` |
-| `section_view` | Cuando una sección `[data-ga-section]` entra en pantalla de verdad. | `section_id`, `page_name` |
+| `section_view` | Cuando una sección `[data-ga-section]` queda en pantalla **al menos 1 s**. | `section_id`, `page_name` |
 | `page_not_found` | URL inexistente antes de redirigir a la home. | `attempted_path` |
 | `web_vitals` | LCP, INP, CLS, FCP y TTFB reales de cada visita. | `metric_name`, `metric_value`, `metric_rating`, `metric_id` |
 
@@ -34,12 +34,40 @@ y el build ni siquiera incluye el código de gtag.
 
 `footer_contacto` no usa `data-ga-section`: el footer es sticky (efecto
 cortina) y el IntersectionObserver lo daría por visto apenas carga la página.
-Lo reporta `useActiveSection` cuando el contenido ya dejó ver la mitad del
-pie.
+Lo reporta `useFooterView` (`src/analytics/hooks.js`) cuando el contenido ya
+dejó ver la mitad del pie durante 1 s. El criterio de "descubierto" está en
+`src/components/curtain.js` y es el mismo que usa el menú para marcar
+*Contacto*.
+
+**Por qué el segundo de espera.** El menú salta a las anclas con scroll suave:
+sin espera, ir de *Inicio* a *Contacto* marcaba como vistas todas las secciones
+del medio. Además, las animaciones de entrada (AOS, fade de 1,6 s) hacen que al
+cruzar el borde el contenido todavía no se vea. `scroll_depth` **no** tiene
+espera: un salto a *Contacto* cuenta como haber llegado al 100 %.
 
 ### Ubicaciones de enlace (`link_location`)
 
 `header`, `footer`, `whatsapp_flotante`, `dir_cta`
+
+### Puntos de contacto del sitio (`contact_click`)
+
+| Dónde | Páginas | `link_location` | `contact_method` | `link_label` |
+| --- | --- | --- | --- | --- |
+| Botón flotante de WhatsApp | todas | `whatsapp_flotante` | `whatsapp` | `WhatsApp flotante` |
+| Correo en el footer | todas | `footer` | `email` | `Correo` |
+| CTA del directorio: correo | `/directorio` | `dir_cta` | `email` | `Escríbenos` |
+| CTA del directorio: WhatsApp | `/directorio` | `dir_cta` | `whatsapp` | `WhatsApp` |
+
+No hay enlace `tel:` en el sitio. El teléfono sólo se usa para armar la URL de
+WhatsApp.
+
+Para saber en qué página se hizo el clic se usa la dimensión estándar
+**Ruta de la página** (`page_location`), que GA4 agrega a todo evento.
+
+Los enlaces del menú y del footer (`Inicio`, `¿Qué hacemos?`, `Directorio`,
+`Contacto`) generan `nav_click` con `link_location` = `header` o `footer`, y
+`link_url` con el ancla (`/#que-hacemos`, `/directorio#contacto`, …). El logo
+del header sale como `link_label` = `Logo Lenga`.
 
 ### Cómo instrumentar algo nuevo
 

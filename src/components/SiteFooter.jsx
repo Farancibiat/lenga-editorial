@@ -8,7 +8,8 @@ import { CONTACT_EMAIL } from '../constants'
 //
 // Sin data-ga-section a propósito: al ser sticky el IntersectionObserver lo
 // ve "en pantalla" desde el primer momento. Su section_view (footer_contacto)
-// lo reporta useActiveSection cuando de verdad queda descubierto.
+// lo reporta useFooterView (analytics/hooks.js) cuando de verdad queda
+// descubierto.
 function SiteFooter() {
   const { pathname } = useLocation()
 

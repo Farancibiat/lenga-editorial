@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import {
+  useFooterView,
   useLinkTracking,
   usePageViews,
   useScrollDepth,
@@ -13,6 +14,7 @@ function Analytics() {
   usePageViews() // page_view por cambio de ruta
   useScrollDepth() // scroll_depth 25/50/75/100
   useSectionViews() // section_view de cada [data-ga-section]
+  useFooterView() // section_view del footer (footer_contacto)
   useLinkTracking() // contact_click / outbound_click / file_download / nav_click
 
   useEffect(() => {

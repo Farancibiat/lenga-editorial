@@ -4,6 +4,7 @@
 
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { isFooterRevealed } from '../components/curtain.js'
 import { CONTACT_METHODS, EVENTS, PARAMS } from './events.js'
 import { trackEvent, trackPageView } from './gtag.js'
 import { getPageMeta } from './pages.js'
@@ -92,12 +93,17 @@ export function useScrollDepth() {
 /* section_view                                                       */
 /* ------------------------------------------------------------------ */
 
+// Una sección cuenta como vista sólo si sigue en pantalla este tiempo. Sin
+// espera, los saltos del menú (scroll suave de Inicio a Contacto) marcarían
+// como vistas todas las secciones intermedias; además, con AOS el contenido
+// entra con un fade de 1,6 s y al cruzar el borde todavía no se ve.
+const SECTION_DWELL_MS = 1000
+const FOOTER_SECTION = 'footer_contacto'
+
 let sectionState = { path: null, fired: new Set() }
 
-// Una section_view por sección y ruta. Exportada para las secciones que el
-// IntersectionObserver no puede juzgar: el footer es sticky y, tapado por el
-// contenido, igual cuenta como "en pantalla" (ver useActiveSection).
-export function reportSectionView(id, pathname) {
+// Una section_view por sección y ruta.
+function reportSectionView(id, pathname) {
   if (sectionState.path !== pathname) {
     sectionState = { path: pathname, fired: new Set() }
   }
@@ -119,26 +125,84 @@ export function useSectionViews() {
     }
     const nodes = document.querySelectorAll('[data-ga-section]')
     if (!nodes.length) return
+    const pending = new Map()
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue
+          const node = entry.target
           // Una sección más alta que la pantalla nunca alcanza 40% de ratio,
           // por eso también cuenta si llena media pantalla.
           const seenEnough =
-            entry.intersectionRatio >= 0.4 ||
-            entry.intersectionRect.height >= window.innerHeight * 0.5
-          if (!seenEnough) continue
+            entry.isIntersecting &&
+            (entry.intersectionRatio >= 0.4 ||
+              entry.intersectionRect.height >= window.innerHeight * 0.5)
 
-          observer.unobserve(entry.target)
-          reportSectionView(entry.target.dataset.gaSection, pathname)
+          if (!seenEnough) {
+            clearTimeout(pending.get(node))
+            pending.delete(node)
+            continue
+          }
+          if (pending.has(node)) continue
+          pending.set(
+            node,
+            setTimeout(() => {
+              pending.delete(node)
+              observer.unobserve(node)
+              reportSectionView(node.dataset.gaSection, pathname)
+            }, SECTION_DWELL_MS),
+          )
         }
       },
       { threshold: [0, 0.1, 0.25, 0.4, 0.75, 1] },
     )
     nodes.forEach((node) => observer.observe(node))
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      pending.forEach((timer) => clearTimeout(timer))
+    }
+  }, [pathname])
+}
+
+// El footer no lleva data-ga-section: es sticky (efecto cortina) y, tapado por
+// el contenido, el IntersectionObserver lo daría por visto apenas carga la
+// página. Se mide cuánto lo dejó ver el contenido, con el mismo criterio que
+// el ítem "Contacto" del menú.
+export function useFooterView() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    let frame = 0
+    let timer = 0
+
+    const check = () => {
+      frame = 0
+      if (!isFooterRevealed()) {
+        clearTimeout(timer)
+        timer = 0
+        return
+      }
+      if (timer) return
+      timer = setTimeout(() => {
+        timer = 0
+        // Se vuelve a mirar al final: imágenes que terminan de cargar pueden
+        // alargar el contenido y tapar el footer sin que haya scroll.
+        if (isFooterRevealed()) reportSectionView(FOOTER_SECTION, pathname)
+      }, SECTION_DWELL_MS)
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(check)
+    }
+
+    schedule()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule, { passive: true })
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      clearTimeout(timer)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
   }, [pathname])
 }
 
