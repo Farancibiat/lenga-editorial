@@ -30,6 +30,9 @@ function SiteFooter() {
           <Link to="/#que-hacemos" data-ga-location="footer">
             ¿Qué hacemos?
           </Link>
+          <Link to="/#opciones" data-ga-location="footer">
+            Opciones
+          </Link>
           <Link to="/directorio" data-ga-location="footer">
             Directorio
           </Link>

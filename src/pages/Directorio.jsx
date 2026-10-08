@@ -1,7 +1,7 @@
 import MapaCastroLogo from '../components/MapaCastroLogo.jsx'
 import fotoAnosLuz from '../assets/anos-luz.jpg'
 import logoAnosLuz from '../assets/logo-anos-luz.png'
-import { CONTACT_EMAIL, WHATSAPP_URL } from '../constants'
+import { WHATSAPP_URL, mailtoUrl } from '../constants'
 
 const FICHA_INCLUYE = [
   'Nombre, categoría y ubicación',
@@ -10,9 +10,7 @@ const FICHA_INCLUYE = [
   'Galería de fotos',
 ]
 
-const MAILTO_PREVENTA = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  'Ficha en el Directorio — Mapa Castro 2027',
-)}`
+const MAILTO_PREVENTA = mailtoUrl('Ficha en el Directorio — Mapa Castro 2027')
 
 const CONTACTOS_DESTACADA = [
   { type: 'address', label: 'San Martín 309, Castro' },

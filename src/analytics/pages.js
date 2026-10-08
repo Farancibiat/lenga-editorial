@@ -7,7 +7,7 @@
 
 export const PAGE_META = {
   '/': {
-    title: 'Lenga Editorial',
+    title: 'Mapa Castro 2027 · Publicidad — Lenga Editorial',
     name: 'home',
   },
   '/directorio': {
