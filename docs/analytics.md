@@ -28,7 +28,8 @@ y el build ni siquiera incluye el código de gtag.
 
 ### Secciones (`section_id`)
 
-`home_hero`, `home_que_hacemos`, `footer_contacto`,
+`home_hero`, `home_que_hacemos`, `home_por_que`, `home_opciones`,
+`home_calendario`, `home_mas_alla`, `home_reservar`, `footer_contacto`,
 `dir_hero`, `dir_fichas`, `dir_que_incluye`, `dir_franja_incluido`,
 `dir_banners`, `dir_cta`
 
@@ -47,7 +48,8 @@ espera: un salto a *Contacto* cuenta como haber llegado al 100 %.
 
 ### Ubicaciones de enlace (`link_location`)
 
-`header`, `footer`, `whatsapp_flotante`, `dir_cta`
+`header`, `footer`, `whatsapp_flotante`, `hero`, `opciones`, `calendario`,
+`mas_alla`, `home_cta`, `dir_cta`
 
 ### Puntos de contacto del sitio (`contact_click`)
 
@@ -55,6 +57,15 @@ espera: un salto a *Contacto* cuenta como haber llegado al 100 %.
 | --- | --- | --- | --- | --- |
 | Botón flotante de WhatsApp | todas | `whatsapp_flotante` | `whatsapp` | `WhatsApp flotante` |
 | Correo en el footer | todas | `footer` | `email` | `Correo` |
+| Hero: Reserva tu espacio | `/` | `hero` | `whatsapp` | `Reserva tu espacio` |
+| Tarjetas de opciones | `/` | `opciones` | `whatsapp` | `Cotizar <opción>` (ej. `Cotizar Viñeta`) |
+| Calendario de venta | `/` | `calendario` | `whatsapp` | `Reservar desde calendario` |
+| CTA final: WhatsApp | `/` | `home_cta` | `whatsapp` | `WhatsApp` |
+| CTA final: correo | `/` | `home_cta` | `email` | `Correo` |
+
+Los WhatsApp del home llevan el mensaje prellenado (`?text=`), que nombra la
+opción elegida. *Ver opciones* (hero) y *Conoce el directorio* (`mas_alla`) son
+enlaces internos: se miden como `nav_click`.
 | CTA del directorio: correo | `/directorio` | `dir_cta` | `email` | `Escríbenos` |
 | CTA del directorio: WhatsApp | `/directorio` | `dir_cta` | `whatsapp` | `WhatsApp` |
 

@@ -6,6 +6,13 @@ import marcaMapaCastroClara from '../assets/home/wa-mapa-castro-claro.svg'
 import iconoMapa from '../assets/home/icono-mapa.webp'
 import iconoWhatsApp from '../assets/home/whatsapp.webp'
 import { WHATSAPP_URL } from '../constants'
+import { getEtapaActual } from '../data/venta2027.js'
+
+function ariaLabel(etapa) {
+  if (!etapa) return 'Escríbenos por WhatsApp'
+  const hasta = etapa.cierre ? ` hasta el ${etapa.cierre}` : ''
+  return `Escríbenos por WhatsApp: ${etapa.nombre.toLowerCase()}${hasta}, reserva tu cupo en el Mapa Castro`
+}
 
 // Viñeta fija de WhatsApp (esquina inferior derecha), igual al bloque del
 // Figma: burbuja "Últimos días", marca Mapa Castro e ícono de WhatsApp.
@@ -46,7 +53,7 @@ function WhatsAppButton() {
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Escríbenos por WhatsApp: últimos días de venta final, reserva tu cupo en el Mapa Castro"
+      aria-label={ariaLabel(getEtapaActual())}
       data-ga-location="whatsapp_flotante"
       data-ga-label="WhatsApp flotante"
     >

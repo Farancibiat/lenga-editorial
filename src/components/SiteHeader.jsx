@@ -9,6 +9,7 @@ function navItems(pathname) {
   return [
     { key: 'inicio', label: 'Inicio', to: '/' },
     { key: 'que-hacemos', label: '¿Qué hacemos?', to: '/#que-hacemos' },
+    { key: 'opciones', label: 'Opciones', to: '/#opciones' },
     { key: 'directorio', label: 'Directorio', to: '/directorio' },
     // El footer está en todas las páginas: Contacto baja al de la página actual.
     { key: 'contacto', label: 'Contacto', to: `${pathname}#contacto` },
